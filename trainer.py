@@ -1,11 +1,11 @@
 from music21 import *
 #from music21.note import Note
-#from music21.note import Rest
-#chord?
 
 import pprint
 import random
 import bisect, numpy
+import argparse
+import pickle
 
 #todo parametrize, handle chords
 
@@ -50,40 +50,17 @@ def trainMC(chain_type, parts,markov_degree):
             markov_dict[key][option] = count / total
     return markov_dict
 
+parser = argparse.ArgumentParser(prog="autoharp trainer")
+parser.add_argument("corpus", nargs="*")
+parser.add_argument("-f", "--file")
+parser.add_argument("-i", "--info")
+args = vars(parser.parse_args())
 
-def sampleMC(markov_dict, chain_type, markov_degree,sequence=None):
-    note_names = ["A3", "C4"] #for testing duration generation
-    if sequence is None:
-        output = stream.Stream()
-    else:
-        output = sequence
+dict = {}
+info = ("", args["info"])[args["info"] != None]
 
-    if chain_type=='duration':
-        field='quarterLength'
-    elif chain_type=='pitch':
-        field='nameWithOctave'
-    else:
-        error('invalid chain_type')
-
-    note1 = note.Note(note_names[0])
-    note1.quarterLength = 2.0
-    note2 = note.Note(note_names[1])
-    note2.quarterLength = 2.0
-    output.append(note1)
-    output.append(note2)
-
-    for i in range(20):
-        matching_key = tuple([(output[j].__class__.__name__, eval('output[j].'+field))
-                              for j in range(-markov_degree,0)])
-
-        options, weights = zip(*markov_dict[matching_key].items())
-        r = random.random()
-        selected_key = options[bisect.bisect(list(numpy.cumsum(weights)), r)]
-        next_note = eval('note.'+selected_key[0]+'()') #construct Note() or Rest()
-        exec('next_note.'+field+'=selected_key[1]')
-        output.append(next_note)
-    return output
-
+pickle.dump((info, dict), open(args["file"], "w"))
+exit()
 
 random.seed(0) #for debugging
 pp = pprint.PrettyPrinter() 
