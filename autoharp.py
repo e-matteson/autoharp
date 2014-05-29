@@ -2,6 +2,9 @@
 import argparse
 import pickle
 
+#todo:
+#rewrite to work with timesteps, conditioning
+
 
 def sampleMC(markov_dict, chain_type, markov_degree,sequence=None):
     note_names = ["A3", "C4"] #for testing duration generation
@@ -44,11 +47,12 @@ args = vars(parser.parse_args())
 
 
 model_file = pickle.load(open(args["model_file"], "r"))
-model = model_file[1]
+model = model_file['parts_dict']
+dt = model_file['timestep']
 
 if args["info"]:
-    if model_file[0] != "":
-        print model_file[0]
+    if model_file["info"] != "":
+        print model_file["info"]
     else:
         print "No model info."
 
@@ -56,3 +60,14 @@ print model
 
 
 
+random.seed(0) #for debugging
+pp = pprint.PrettyPrinter() 
+
+
+degree=2
+dict=trainer('pitch',parts,degree)
+out=sampleMC(dict,'pitch',degree)
+out.show('text')
+out.show()
+sp=midi.realtime.StreamPlayer(out)
+sp.play()
