@@ -2,13 +2,13 @@
 #
 class MarkovKey(object):
     
-    #Any part names are acceptable as arguments
-    def __init__(self, **kwargs):
-        self.partnames = kwargs.keys()
-        for i in kwargs.values():
+    #takes {'any part name': (note, values)}
+    def __init__(self, args):
+        self.partnames = args.keys()
+        for i in args.values():
             if not isinstance(i, tuple):
                 raise ValueError("Part value must be a tuple of note name strings.")
-        self.__dict__.update(kwargs)
+        self.__dict__.update(args)
 
     def __eq__(self, other):
         for name in self.partnames:
@@ -19,15 +19,14 @@ class MarkovKey(object):
         return True
 
     def __hash__(self):
-        print reduce(lambda base, new: base.__add__(new), [getattr(self, name) for name in self.partnames], ())
         return hash(reduce(lambda base, new: base.__add__(new), [getattr(self, name) for name in self.partnames], ()))
 
 
 if __name__ == "__main__":
-    a = MarkovKey(tenor = ("A", "B"), bass = ("C",))
-    b = MarkovKey(treble = ("C",), bass = ("A", "B"))
-    c = MarkovKey(treble = ("C",), tenor = ("B", "A"))
-    d = MarkovKey(tenor = ("B", "A"), treble = ("C",))
+    a = MarkovKey({'tenor':("A", "B"), 'bass':("C",)})
+    b = MarkovKey({'treble':("C",), 'bass':("A", "B")})
+    c = MarkovKey({'treble':("C",), 'tenor':("B", "A")})
+    d = MarkovKey({'tenor':("B", "A"), 'treble':("C",)})
 
     dict = {}
     dict[a] = 1
