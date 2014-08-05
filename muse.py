@@ -10,6 +10,17 @@ def print_note(note):
     print
 
 
+duration_dict={0x27: .256,
+               0x4e: .5, #eighth
+               0x9d: 1,  #quarter
+               0xec: 1.5,
+               0x13b: 2, #half
+               0x1d8: 3,
+               0x276: 4, #whole
+               0x313: 5,
+               0x3b1: 6
+               }
+               
 
 file = open(sys.argv[1], 'rb')
 
