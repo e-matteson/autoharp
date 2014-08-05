@@ -1,0 +1,59 @@
+part names
+treble alto tenor bass
+
+durations
+4/4:
+4e (N) = 1/8
+9d (.) = 1/4
+3b (;) = 1/2
+76 (v) = 1
+
+notes
+20ff40 = rest?
+64??40 = note
+
+3d = C#4
+3e = D4
+40 = E4
+42 = F#4
+44 = G#4
+45 = A4
+49 = C#5
+4c = E5
+
+
+
+
+31 (1) = C3
+39 (9) = A3
+2d (-) = A2
+
+A
+bottom of chord (second)
+4000 0002 0001 3b00 0101 0000 64ff ff00 0000 0000 0000 0000 0004 00
+
+E
+top of chord (comes first)
+4001 0102 0001 3b00 0101 0000 64ff ff00 0000 0000 0000 0000 0000 00
+
+non chord half
+4000 0402 0001 3b00 0101 0000 64ff ff00 0000 0000 0000 0000 0004 00
+
+non chord half 2
+4000 0402 0001 3b00 0101 0000 64ff ff00 0000 0000 0000 0000 0004 00
+
+non chord whole
+4000 0402 0002 7600 0101 0000 64ff ff00 0000 0000 0000 0000 0004 00
+
+C
+bottom of chord half
+4001 0401 0001 3b00 0101 0000 64ff ff00 0000 0000 0000 0000 0000 00
+
+non chord half
+4000 0002 0001 3b00 0101 0000 64ff ff12 0000 0000 0000 0000 0004 00
+
+A
+top of chord 
+4000 0502 0001 3b00 0101 0000 64ff ff00 0000 0000 0000 0000 0008 00
+
+non chord quarter
