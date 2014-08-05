@@ -3,15 +3,18 @@ treble alto tenor bass
 
 durations
 4/4:
-4e (N) = 1/8
-9d (.) = 1/4
-3b (;) = 1/2
-76 (v) = 1
+004e (N) = 78 = 1/8
+009d (.) =  = 1/4
+013b (;) =  = 1/2
+01d8     =  = 3/4
+0276 (v) =  = 1
 
 notes
-20ff40 = rest?
-64??40 = note
 
+??40 = note
+ff40 = rest
+
+3c = C4
 3d = C#4
 3e = D4
 40 = E4
@@ -20,7 +23,6 @@ notes
 45 = A4
 49 = C#5
 4c = E5
-
 
 
 
