@@ -1,6 +1,8 @@
 #from music21 import *
 import argparse
 import pickle
+import random
+import pprint
 
 #todo:
 #rewrite to work with timesteps, conditioning

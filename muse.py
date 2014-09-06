@@ -1,4 +1,4 @@
-import sys, re, music21
+import sys, re, music21, pickle
 
 
 def print_note(note, prefix=""):
@@ -11,16 +11,21 @@ def print_note(note, prefix=""):
     print
 
 
-duration_dict={0x27: .256,
+duration_dict={0x27: .25,
                0x4e: .5, #eighth
                0x69: 2./3, 
+               0x76: .75,
                0x9d: 1,  #quarter
                0xec: 1.5,
                0x13b: 2, #half
+               0x189: 2.5,
                0x1d8: 3,
                0x276: 4, #whole
+               0x2c4: 4.5,
                0x313: 5,
-               0x3b1: 6
+               0x3b1: 6,
+               0x44e: 7,
+               0x589: 9,
                }
                
 
@@ -66,7 +71,8 @@ def parse_part(bytestring, part):
             print "unknown duration: " + note[6:8].encode('hex')
             print part + ", note # " + str(num_notes)
             print_note(note)
-            sys.exit(1)
+            #sys.exit(1)
+            return
             
         if note[0] == "\xff": #Rest
             m21_rest = music21.note.Rest()
@@ -97,11 +103,16 @@ def parse_part(bytestring, part):
 #                print_note(note)
 
         num_notes += 1
-
+    print "\nParsing " + f + "\n"
+    raw_input()
     return part_stream
 
+import os
 
+for f in os.listdir('songdumps')[::-1]:
+    
+    file = open("songdumps/"+f, 'rb')
+    outer_stream = parse(file.read())
 
-file = open(sys.argv[1], 'rb')
-outer_stream = parse(file.read())
-outer_stream.show()
+#sf = music21.freezeThaw.StreamFreezer(outer_stream)
+#sf.write(fp=sys.argv[1].replace(".mus", ".pkl"))
