@@ -16,7 +16,6 @@ from libharp import MarkovKey
 
 def trainMC(song_dicts, args):
     
-
     markov_dict = {}
     for song_dict in song_dicts:
         part = song_dict[args['mc_name']]
@@ -26,15 +25,15 @@ def trainMC(song_dicts, args):
             val = None  #rests will stay as None
             if isinstance(n, note.Note):
                 val = n.nameWithOctave
-            elif isinstance(n, note.Chord):
+            elif isinstance(n, chord.Chord):
                 #TODO: currently take one pitch, discard the rest
                 val = n.pitches[0].nameWithOctave 
 
             #append val repeatedly, based on duration in timesteps
-            for t in range(n.quarterLength/args['timestep']):
+            for t in range(int(n.quarterLength/args['timestep'])): #this should always be an integer
                 note_list.append(val)
 
-        current_key = MarkovKey(tuple(note_list[:degree])) #TODO: currently only condition on self
+        current_key = MarkovKey({args['mc_name']:tuple(note_list[:degree])}) #TODO: currently only condition on self
 
         #TODO: currently don't generate transition probabilities to the first degree notes of song
         for i in range(degree):
@@ -45,14 +44,18 @@ def trainMC(song_dicts, args):
         while len(note_list) > 0:
             nxt = note_list.pop(0)
             print repr(nxt)
-            if not markov_dict.has_key(tuple(current_key)):
+            if not markov_dict.has_key(current_key):
                 print "First time seeing key " + repr(current_key)
-                markov_dict[tuple(current_key)] = {}
-            if not markov_dict[tuple(current_key)].has_key(nxt):
+                markov_dict[current_key] = {}
+            if not markov_dict[current_key].has_key(nxt):
                 print "First time seeing transition from " + repr(current_key) + " to " + repr(nxt)
-                markov_dict[tuple(current_key)][nxt] = 0.
+                markov_dict[current_key][nxt] = 0.
 
-            markov_dict[tuple(current_key)][nxt] += 1.
+            markov_dict[current_key][nxt] += 1.
+            tmp_key_dict = {}
+            for partname in args['conditions'].keys():
+                current_key[partname]
+
             current_key = current_key[1:] + [nxt]
 
     #normalize transition probabilities
@@ -76,9 +79,8 @@ part_names= ["Treble", "Alto","Tenor", "Bass"] #should come from args
 song_dicts = []
 
 for song in songs:
-    #parsed = converter.parse(song) #For the glorious future in which xml export works
-    parsed = pickle.load(song)
-    parts=filter(lambda x: x in part_names, map(lambda y: y.id, parsed.getElementsByClass(stream.Part)))
+    parsed = converter.thaw(song)
+    parts=filter(lambda x: x.id in part_names, parsed.getElementsByClass(stream.Part))
     print parts
     if len(parts) != 4:
         continue

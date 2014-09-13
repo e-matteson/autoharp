@@ -104,15 +104,18 @@ def parse_part(bytestring, part):
 
         num_notes += 1
     print "\nParsing " + f + "\n"
-    raw_input()
     return part_stream
 
 import os
 
-for f in os.listdir('songdumps')[::-1]:
-    
+
+for f in os.listdir('songdumps'):
+
     file = open("songdumps/"+f, 'rb')
     outer_stream = parse(file.read())
+
+    music21.converter.freeze(outer_stream, fp="pickles/"+f+".pkl") 
+
 
 #sf = music21.freezeThaw.StreamFreezer(outer_stream)
 #sf.write(fp=sys.argv[1].replace(".mus", ".pkl"))

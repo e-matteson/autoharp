@@ -2,12 +2,12 @@
 #
 class MarkovKey(object):
     
-    #takes {'any part name': (note, values)}
+    #takes {'any part name': (note1, note2,...)}
     def __init__(self, args):
         self.partnames = args.keys()
         for i in args.values():
             if not isinstance(i, tuple):
-                raise ValueError("Part value must be a tuple of note name strings.")
+                raise ValueError("right side must be a tuple of note name strings.")
         self.__dict__.update(args)
 
     def __eq__(self, other):
@@ -20,6 +20,19 @@ class MarkovKey(object):
 
     def __hash__(self):
         return hash(reduce(lambda base, new: base.__add__(new), [getattr(self, name) for name in self.partnames], ()))
+
+
+class MarkovNote(object):
+    def __init__(self, name, is_end):
+        #takes note name (str), and whether its the last timestep of note (bool) 
+        self.name = name
+        self.is_end = is_end
+
+    def __eq__(self, other):
+        return self.name == other.name and self.is_end == other.is_end
+        
+    def __hash__(self):
+        return hash(self.name+str(self.is_end))
 
 
 if __name__ == "__main__":
